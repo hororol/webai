@@ -1,24 +1,38 @@
 package com.example.DBPractice.controller;
 
+import com.example.DBPractice.dao.BookRepository;
+import com.example.DBPractice.dto.BookDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
+@RequestMapping(value = "/book")
 public class BookController {
 
-    // 뷰의 요청 경로 지정, 내가 목표로 하는 view의 경로
-    @RequestMapping(value = "/create", method = RequestMethod.GET) // create메소드는 브라우저에서 /create주소가 get방식으로 입력되었을때 book/create 경로의 뷰를 보여준다.
-    public ModelAndView create(){
-        return new ModelAndView("book/create");
+    @Autowired
+    BookRepository bookRepository;
+
+    @PostMapping("/search")
+    public String search(Model model, BookDTO bookDTO){
+        List<BookDTO> bookList = bookRepository.doSelect(bookDTO);
+        model.addAttribute("bookList", bookList);
+        return "book/search";
     }
 
-    @GetMapping("/")
-    public String home(){
-        return "home";
+    @GetMapping("/view")
+    public String view(Model model, BookDTO bookDTO){
+        bookDTO = bookRepository.doSelectOne(bookDTO);
+        System.out.println(bookDTO);
+        model.addAttribute("bookDetail", bookDTO);
+        return "book/view";
     }
+
 }
 
 // @RequestMapping은 클래스 레벨과 메소드 둘다 맵핑할 수 있고 @GetMapping은 메소드에만 맵핑할 수 있다. 그러니깐 @GetMapping이 더 세분화되어있다고 볼수있다.

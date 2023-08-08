@@ -1,0 +1,49 @@
+# image 파일 다운로드
+docker pull ubuntu:버전 <- 버전을 안적으면 최신버전으로 자동 install
+# 이미지 파일 목록 보기
+docker images
+# 이미지 컨테이너 목록 보기
+# -a 옵션하면 정지된 컨테이너 보기
+docker ps
+# 이미지를 컨테이너화 하기
+docker create --name myubuntu ubuntu
+# 이미지를 컨테이너화 실행
+docker start --name myubuntu ubuntu
+# 이미지 컨테이너 생성 및 실행 pull까지(create와 start를 동시에 하는 명령어)
+docker run --name myubuntu -p 5000:5000 ubuntu
+# 이미지 컨테이너 생성 및 실행 pull까지하고 중간에 멈추지 않는 명령어
+# -d 옵션하면 Detached모드, 보통 데몬 모드라고 부르며, 컨테이너가 백그라운드로 실행된다.
+# -it 옵션하면 -i옵션과 -t옵션을 같이 쓰는 경우이다. 컨테이너에 표준입력(stdin)을 열어두고(-i), 가상터미널을 열어(-t)키보드의 입력을 표준입력으로 전달할 수 있도록하는 옵션.
+docker run --name myubuntu -d -it -p 5000:5000 ubuntu
+# 로컬 pc에서 컨테이너로 이동
+docker exec -it myubuntu bash
+# 종료(컨테이너 -> pc로 이동)
+exit
+# 컨테이너 이름이 myubuntu 삭제
+docker rm myubuntu
+# 이미지 ubuntu 삭제
+docker rmi ubuntu
+
+# 리눅스 업데이트
+apt update
+# 리눅스에 ide 설치 설치 할꺼냐 y해야됨
+apt install vim
+# 폴더 생성
+mkdir src
+# 폴더 이동
+cd src
+# 소스 작성하기
+vi app.py
+python 소스 넣고 wq로 종료하기
+
+# 파이썬 설치
+# sudo 명령어는 superuser가 설치하겠다는 의미이다.
+(sudo) apt install python3.10
+
+# 230727로 이동
+cd .\230727\
+# dockerfile로 이미지 만드는 명령어
+docker build -t myflaskimage .
+
+# 내 이미지로 컨테이너 만들어서 실행하기
+docker run -d -it --name py-container -p 5000:5000 myflaskimage

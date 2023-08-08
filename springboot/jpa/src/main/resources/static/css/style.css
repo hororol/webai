@@ -4,3 +4,7 @@
     font-family: 'Noto Serif KR', serif;
     font-family: 'VT323', monospace;
  }
+
+a{
+    text-decoration :none;
+}
